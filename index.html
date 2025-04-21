@@ -1,0 +1,848 @@
+
+<!doctype html>
+<html lang="ja">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NDSFN28');</script>
+<!-- End Google Tag Manager -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<title>
+法律事務所桃李</title>
+
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="https://okamoto-saiken.com/common2/css/html5reset.css">
+<link rel="stylesheet" href="https://okamoto-saiken.com/common2/css/common.css">
+<script src="https://okamoto-saiken.com/common2/js/jquery-1.11.1.min.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/jquery.zrssfeed.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/match_height.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/script.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/random.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/header.js"></script>
+<!-- Local CSS/JS -->
+
+<!--[if lt IE 9]>
+<link rel="stylesheet" href="https://okamoto-saiken.com/common2/css/ie8fix.css">
+<script src="https://okamoto-saiken.com/common2/js/html5shiv.min.js"></script>
+<script src="https://okamoto-saiken.com/common2/js/respond.min.js"></script>
+<![endif]-->
+
+<!-- Debug>
+<link rel="stylesheet" href="https://okamoto-saiken.com/common2/css/w-flat_debug.css">
+<script src="https://okamoto-saiken.com/common2/js/w-flat_debug.js"></script>
+<!enddebug-->
+
+<link rel="stylesheet" href="https://okamoto-saiken.com/wp-content/themes/okamoto/style.css">
+
+
+	<style>
+		.wpcf7-submit{
+			display:none;
+		}
+		.recaptcha-btn{
+			display:block;
+		}
+		.grecaptcha-badge { margin: 10px 0; }
+	</style>
+	<script type="text/javascript">
+		var contactform = [];
+		var checkIfCalled = true;
+		var renderGoogleInvisibleRecaptchaFront = function() {
+			// prevent form submit from enter key
+			jQuery("input[name=_wpcf7]").attr("class","formid");
+				jQuery('.wpcf7-form').on('keyup keypress', "input", function(e) {
+				  var keyCode = e.keyCode || e.which;
+				  if (keyCode === 13) {
+					e.preventDefault();
+					return false;
+				  }
+				});
+
+			jQuery('.wpcf7-submit').each(function(index){
+
+				var checkexclude = 0;
+				var form = jQuery(this).closest('.wpcf7-form');
+				var value = jQuery(form).find(".formid").val();
+				// check form exclude from invisible recaptcha
+								if(checkexclude == 0){
+					// Hide the form orig submit button
+					form.find('.wpcf7-submit').hide();
+
+					// Fetch class and value of orig submit button
+					btnClasses = form.find('.wpcf7-submit').attr('class');
+					btnValue = form.find('.wpcf7-submit').attr('value');
+
+					// Add custom button and recaptcha holder
+
+					form.find('.wpcf7-submit').after('<input type="button" id="wpcf-custom-btn-'+index+'" class="'+btnClasses+'  recaptcha-btn recaptcha-btn-type-css" value="'+btnValue+'" title="'+btnValue+'" >');
+					form.append('<div class="recaptcha-holder" id="recaptcha-holder-'+index+'"></div>');
+					// Recaptcha rendenr from here
+					var holderId = grecaptcha.render('recaptcha-holder-'+index,{
+								'sitekey':'6Lczxa8ZAAAAAHVzS7xUZxG9UHho2rkoZEdmID0P',
+								'size': 'invisible',
+								'badge' : 'inline', // possible values: bottomright, bottomleft, inline
+								'callback' : function (recaptchaToken) {
+									//console.log(recaptchaToken);
+									var response=jQuery('#recaptcha-holder-'+index).find('.g-recaptcha-response').val();
+									//console.log(response);
+									//Remove old response and store new respone
+									jQuery('#recaptcha-holder-'+index).parent().find(".respose_post").remove();
+									jQuery('#recaptcha-holder-'+index).after('<input type="hidden" name="g-recaptcha-response"  value="'+response+'" class="respose_post">')
+									grecaptcha.reset(holderId);
+
+									if(typeof customCF7Validator !== 'undefined'){
+										if(!customCF7Validator(form)){
+											return;
+										}
+									}
+									// Call default Validator function
+									else if(contactFormDefaultValidator(form)){
+										return;
+									}
+									else{
+										// hide the custom button and show orig submit button again and submit the form
+										jQuery('#wpcf-custom-btn-'+index).hide();
+										form.find('input[type=submit]').show();
+										form.find("input[type=submit]").click();
+										form.find('input[type=submit]').hide();
+										jQuery('#wpcf-custom-btn-'+index).attr('style','');
+									}
+								}
+						},false);
+
+					// action call when click on custom button
+					jQuery('#wpcf-custom-btn-'+index).click(function(event){
+						event.preventDefault();
+						// Call custom validator function
+						if(typeof customCF7Validator == 'function'){
+							if(!customCF7Validator(form)){
+								return false;
+							}
+						}
+						// Call default Validator function
+						else if(contactFormDefaultValidator(form)){
+							return false;
+						}
+						else if(grecaptcha.getResponse(holderId) != ''){
+							grecaptcha.reset(holderId);
+						}
+						else{
+							// execute the recaptcha challenge
+							grecaptcha.execute(holderId);
+						}
+					});
+				}
+			});
+		}
+	</script><script  src="https://www.google.com/recaptcha/api.js?onload=renderGoogleInvisibleRecaptchaFront&render=explicit" async defer></script><meta name='robots' content='max-image-preview:large' />
+<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/okamoto-saiken.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.1.5"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(p&&p.fillText)switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css' href='https://okamoto-saiken.com/wp-includes/css/dist/block-library/style.min.css?ver=6.1.5' type='text/css' media='all' />
+<link rel='stylesheet' id='classic-theme-styles-css' href='https://okamoto-saiken.com/wp-includes/css/classic-themes.min.css?ver=1' type='text/css' media='all' />
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;}:where(.is-layout-flex){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='contact-form-7-css' href='https://okamoto-saiken.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.7.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-pagenavi-css' href='https://okamoto-saiken.com/wp-content/plugins/wp-pagenavi/pagenavi-css.css?ver=2.70' type='text/css' media='all' />
+<script type='text/javascript' src='https://okamoto-saiken.com/wp-includes/js/jquery/jquery.min.js?ver=3.6.1' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://okamoto-saiken.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<script type='text/javascript' src='https://okamoto-saiken.com/wp-content/plugins/cf7-invisible-recaptcha/js/cf7_invisible_recaptcha.js?ver=1.2.3' id='cf7_invisible_recaptcha_functions-js'></script>
+<link rel="https://api.w.org/" href="https://okamoto-saiken.com/wp-json/" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://okamoto-saiken.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://okamoto-saiken.com/wp-includes/wlwmanifest.xml" />
+<script src='https://mediamaker-8.com/?dm=c909747ccd8429088c7eeba58e9506b7&amp;action=load&amp;blogid=4&amp;siteid=1&amp;t=1395076067&amp;back=https%3A%2F%2Fokamoto-saiken.com%2F' type='text/javascript'></script><style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style><style type="text/css">.broken_link, a.broken_link {
+	text-decoration: line-through;
+}</style></head>
+
+<body id="top">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDSFN28"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div id="container">
+	<header id="header">
+		<div class="lead">
+			<h1>債権回収、消費者被害、訪問販売トラブル、ネットワークビジネストラブル、企業トラブルは法律の専門家への相談が解決の近道です</h1>
+		</div>
+		<div class="inr">
+			<div class="logo fl">
+				<a href="https://okamoto-saiken.com"><img src="https://okamoto-saiken.com/wp-content/themes/okamoto/img/logo.png" alt="法律事務所桃李"></a>
+			</div>
+			<div id="contacts" class="fr">
+				<dl class="fl">
+					<dt>対応時間</dt>
+					<dd>9:00～17:00</dd>
+					<dt>定休日</dt>
+					<dd>土・日・祝日</dd>
+					<dd>事前予約で時間外対応可能</dd>
+				</dl>
+				<div class="tel_area fl">
+					<ul>
+						<li class="tel"><a class="tel_link fl" href="tel:05031885207"><span data-label="お気軽にお問合わせください">050-3188-5207</span></a></li>
+					</ul>
+				</div>
+				<a class="btn fl" href="https://okamoto-saiken.com/inq/">お問合せ</a>
+			</div>		
+		</div>
+		<div id="headnav" class="cfx">
+			<nav id="gnav">
+				<ul>
+					<li><a href="#Ltop"><em>HOME</em></a></li>
+					<li><a href="#Lfield"><em>主な取扱業務</em></a></li>
+					<li><a href="#Lcaseexample"><em>基礎知識</em></a></li>
+					<li><a href="#Lkeyword"><em>よく検索されるキーワード</em></a></li>
+					<li><a href="#Lstaff"><em>弁護士紹介</em></a></li>
+					<li><a href="#Lcompany">事務所概要</a></li>
+					<li class="close"><a href="#page">CLOSE</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div id="sp_contacts">
+			<ul class="tel_area">
+				<li>お気軽にお問合わせください</li>
+				<li><a class="tel_link" href="tel:05031885207">050-3188-5207</a></li>
+				<li><span>初回電話相談無料</span></li>
+			</ul>
+			<dl>
+				<dt>対応時間</dt>
+				<dd>9:00～17:00</dd>
+				<dt>定休日</dt>
+				<dd>土・日・祝日</dd>
+			</dl>
+			<p>事前予約で時間外対応可能</p>
+		</div>
+	</header>
+	<!-- //header -->
+
+	
+	<div id="splash">
+		<div class="inr">
+			<div id="catch">
+				<div class="catch-heading">
+					<h2>
+						<span>「法律事務所桃李に相談して良かった」とご満足頂ける、</span>
+						<span>そんな安心・信頼の法律サポートを提供いたします。</span>
+					</h2>
+				</div>
+				<div class="catch-features">
+					<p>
+						<span class="features1">迅速</span><span class="features1">対応！</span><span class="features2">いたします</span>
+					</p>
+				</div>
+				<div class="catch-list">
+					<ul>
+						<li><div>債権回収</div></li>
+						<li><div>消費者被害</div></li>
+						<li><div>訪問販売トラブル</div></li>
+						<li><div>ネットワークビジネストラブル</div></li>
+						<li><div>企業トラブル</div></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- //splash -->
+
+
+	<div id="contents" class="cfx">
+		<div id="main">
+
+
+<!-- //splash -->
+<div id="contents" class="cfx">
+	<div id="main">
+		<section id="field" class="mfrm">
+			<div class="bg">
+				<div class="inr">
+					<header class="mhead"><h2>主な取扱業務</h2></header>
+					<article class="mbody cfx">
+						<div>
+							<span>
+								<img class="fit" src="https://okamoto-saiken.com/wp-content/themes/okamoto/img/business2.jpg" width="230" height="230" alt="消費者トラブル">
+							</span>
+							<h3>消費者とのトラブルにお困りの企業へのサポート</h3>
+							<p>企業が活動を行っていると消費者と接する際にトラブルになってしまうことが考えられます。このような消費者トラブルが起こってしまうことにより企業自体の信用失墜や損害賠償を行わなくてはならないなど様々な問題を抱えることになるのです<br>
+							<br>
+							一般的に企業と消費者の間では持っている情報に大きな格差があり弱い立場である消費者を保護するために法律で様々な規制がなされています。このような規制や法の内容を把握していなかった場合思わぬトラブルへとつながりかねません。よくある事例としては訪問販売の行い方や誇大広告といったものが挙げられます。消費者トラブルが起こってしまった場合には迅速な対応が必要です。</p>
+							<p><a href="/shouhisha-trouble/" class="btn fr">詳しく見る</a></p>
+						</div>	
+						<div>
+							<span>
+								<img class="fit" src="https://okamoto-saiken.com/wp-content/themes/okamoto/img/business3.jpg" width="230" height="230" alt="企業法務">
+							</span>
+							<h3>企業法務にお悩みの企業へのサポート</h3>
+							<p>企業法務と聞くと、皆さんはどのようなイメージをお持ちになられるでしょうか。<br>
+							「会社に法務部があるが、何をしている部署なのかよくわからない」<br>
+							といった声はしばしば耳にします。<br>
+							<br>
+							また、経営者の声として、<br>
+							「企業法務に精通した法務部を作りたいが、専門的な人員が不足している」<br>
+							あるいは法務部に所属している社員であっても<br>
+							「法務部としての仕事というよりも雑務が多い」<br>
+							といったようなことが挙げられます。<br>
+							<br>
+							近年はコンプライアンスの徹底が求められ、たとえBtoCの企業ではなくとも、企業活動に与える影響は計り知れないものがあります。<br>
+							<br>
+							しかし、必ずしも社内に法律に精通した専門的な人員を配置する必要はありません。<br>
+							弁護士と顧問契約を結ぶことで、適切なアドバイスを受けることが可能になります。</p>
+							<p><a href="/kigyo-houmu/" class="btn fr">詳しく見る</a></p>
+						</div>
+						<div>
+							<span>
+								<img class="fit" src="https://okamoto-saiken.com/wp-content/themes/okamoto/img/business1.jpg" width="230" height="230" alt="債権回収">
+							</span>
+							<h3>債権回収にお困りの企業へのサポート</h3>
+							<p>債権回収はビジネスを安定的に継続していくうえで非常に重要なものです。<br>
+							企業間の取引・サービスに求められる対価は、個人消費と比較することが困難なほど巨額になります。そのため、自然と代金の支払いが後払いとなっていきます。<br>
+							<br>
+							近年は売掛をなるべく避けて健全な経営を目指すという手法も注目されていますが、そうした手法を取ることが出来るのは限られた業種や業態になるでしょう。その他多くの企業にとっては、信頼できる債権管理システムを構築し、債権回収に注力しなければなりません。<br>
+							<br>
+							債権回収を滞りなく実行し、売掛金の回収ミスの発生を防ぐことで、企業経営に更なる成長をもたらすことにつながります。ビジネス規模が拡大してきたタイミングや、これから複数の企業との取引をはじめるという方は債権回収のプロセス検討に注力されることをおすすめします。</p>
+							<p><a href="/saikenkaishu/" class="btn fr">詳しく見る</a></p>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+
+
+			<section id="caseexample" class="mfrm">
+				<div class="bg">
+					<div class="inr">
+						<header class="mhead"><h2>当事務所が提供する基礎知識</h2></header>
+						<article class="mbody cfx">
+							<ul class="cfx" randomdisplay="6">
+<li>
+<a href="https://okamoto-saiken.com/saikenkaishu/%e6%9c%aa%e6%89%95%e3%81%84%e9%87%91%e3%82%92%e5%9b%9e%e5%8f%8e%e3%81%97%e3%81%9f%e3%81%84%ef%bc%81%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%82%92%e4%bc%81%e6%a5%ad%e3%81%8c%e8%a1%8c%e3%81%86%e9%9a%9b/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2020/01/image-t-64.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>未払い金を回収したい！債...</h3></a>
+<p>
+売掛金による取引で注意しなければならないのは未払金の問題です。取引先が決まった金額を支払わないような状況に陥ってしまった...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/kigyo-houmu/%e9%a1%a7%e5%95%8f%e5%bc%81%e8%ad%b7%e5%a3%ab%e3%81%ae%e5%bd%b9%e5%89%b2%e3%81%a8%e3%83%a1%e3%83%aa%e3%83%83%e3%83%88/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2020/01/image-t-69.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>顧問弁護士の役割とメリッ...</h3></a>
+<p>
+「コンプライアンスの重要性が高まっているため、企業の法務能力を強化したいが、人材不足で思うようにいかない。」「契約書のリ...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/shouhisha-trouble/%e3%80%902023%e5%b9%b46%e6%9c%88%e6%96%bd%e8%a1%8c%e3%80%91%e6%94%b9%e6%ad%a3%e6%b6%88%e8%b2%bb%e8%80%85%e5%a5%91%e7%b4%84%e6%b3%95%e3%81%ae%e5%86%85%e5%ae%b9%e3%81%af%ef%bc%9f%e4%bc%81%e6%a5%ad/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2021/07/image-t-11.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>【2023年6月施行】改...</h3></a>
+<p>
+企業が消費者に対して商品を販売したりサービスを提供したりするとき、「消費者契約法」の内容に留意しないといけません。同法へ...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/shouhisha-trouble/%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%9e%e3%83%bc%e3%83%8f%e3%83%a9%e3%82%b9%e3%83%a1%e3%83%b3%e3%83%88%ef%bc%88%e3%82%ab%e3%82%b9%e3%83%8f%e3%83%a9%ef%bc%89%e3%81%ae%e5%af%be%e7%ad%96%e6%96%b9%e6%b3%95/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2021/07/image-0127-1.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>カスタマーハラスメント（...</h3></a>
+<p>
+■カスタマーハラスメント（カスハラ）とは？近年、様々な種類のハラスメントが話題となっており、「カスタマーハラスメント（カ...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/shouhisha-trouble/%e7%89%b9%e5%ae%9a%e5%95%86%e5%8f%96%e5%bc%95%e6%b3%95%e3%81%b8%e3%81%ae%e5%af%be%e5%87%a6%e6%b3%95/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2020/01/image-t-72.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>特定商取引法への対処法</h3></a>
+<p>
+「特定商取引法」とは、「訪問販売法」の新名称であり、訪問販売や通信販売、電話勧誘販売など、様々な種類の取引において消費者...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/kigyo-houmu/%e5%86%85%e9%83%a8%e7%b5%b1%e5%88%b6%e3%82%b7%e3%82%b9%e3%83%86%e3%83%a0%e3%81%a8%e3%81%af%ef%bc%9f%e4%bc%9a%e7%a4%be%e6%b3%95%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e6%a7%8b%e7%af%89%e7%9b%ae%e7%9a%84/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2021/07/image-t-23.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>内部統制システムとは？会...</h3></a>
+<p>
+会社に対する高いコンプライアンス意識が要求されている中で、会社法上の内部統制システムを構築する要請も高まっているといえま...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/shouhisha-trouble/%e9%81%8e%e5%89%b0%e8%a6%81%e6%b1%82%e3%83%bb%e4%b8%8d%e5%bd%93%e8%a6%81%e6%b1%82%e3%81%ae%e8%a8%80%e3%81%84%e3%81%aa%e3%82%8a%e3%81%ab%e3%81%aa%e3%82%89%e3%81%aa%e3%81%84%e3%82%af%e3%83%ac%e3%83%bc/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2021/07/image-t-11.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>過剰要求・不当要求の言い...</h3></a>
+<p>
+今日の顧客からのクレームには2種類あり、今後の顧客満足度の向上につながるようなプラスのクレームと、過剰な要求や不当な要求...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/saikenkaishu/%e5%a3%b2%e6%8e%9b%e9%87%91%e3%81%ae%e5%9b%9e%e5%8f%8e%e3%82%92%e5%bc%81%e8%ad%b7%e5%a3%ab%e3%81%ab%e4%be%9d%e9%a0%bc%e3%81%99%e3%82%8b%e3%83%a1%e3%83%aa%e3%83%83%e3%83%88/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2020/01/image-132.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>売掛金の回収を弁護士に依...</h3></a>
+<p>
+■負担の軽減相手方に支払い能力がない場合や支払う意思がない場合は売掛金の回収に手間がかかります。そのような事態に直面した...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/kigyo-houmu/%e5%a5%91%e7%b4%84%e6%9b%b8%e4%bd%9c%e6%88%90%e3%81%a8%e3%83%aa%e3%83%bc%e3%82%ac%e3%83%ab%e3%83%81%e3%82%a7%e3%83%83%e3%82%af%e3%81%ae%e9%87%8d%e8%a6%81%e6%80%a7/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2020/01/image-t-71.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>契約書作成とリーガルチェ...</h3></a>
+<p>
+「契約書は、取引先が提示してくれたものをそのまま利用している。」「こちらが新しく契約書を作成する必要があるときには、以前...</p>
+</li>
+  					
+<li>
+<a href="https://okamoto-saiken.com/shouhisha-trouble/%e3%80%90%e7%89%b9%e5%95%86%e6%b3%95%e3%80%91%e9%81%8e%e9%87%8f%e8%b2%a9%e5%a3%b2%e3%81%ae%e5%88%b6%e9%99%90%e3%81%a8%e3%81%af%e3%81%a9%e3%81%ae%e3%82%88%e3%81%86%e3%81%aa%e3%82%82%e3%81%ae%e3%81%aa/"><img width="90" height="90" src="https://okamoto-saiken.com/wp-content/uploads/sites/4/2021/07/image-t-54.jpg" class="attachment-thumbnail size-thumbnail wp-post-image" alt="" decoding="async" loading="lazy" /><h3>【特商法】過量販売の制限...</h3></a>
+<p>
+公正な取引や消費者の保護を図る特商法では、「過量販売」という行為にも制限をかけています。事業者は同法の内容をよく理解し、...</p>
+</li>
+  					
+							</ul>
+						</article>
+					</div>
+				</div>
+			</section>
+			<section id="keyword" class="mfrm">
+				<div class="bg">
+					<div class="inr">
+						<header class="mhead"><h2>よく検索されるキーワード</h2></header>
+						<article class="mbody cfx">
+							<div class="search_category">
+								<h3>債権回収に関するキーワード</h3>
+								
+                                <ul>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a3%b2%e6%8e%9b%e9%87%91-%e6%99%82%e5%8a%b9-2/">売掛金 時効</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bb%ae%e5%87%a6%e5%88%86-%e7%94%b3%e8%ab%8b/">仮処分 申請</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e6%96%b9%e6%b3%95-%e5%80%8b%e4%ba%ba/">債権回収 方法 個人</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bf%9d%e5%85%a8-%e6%89%8b%e7%b6%9a-%e3%81%a8-%e3%81%af/">保全 手続 と は</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bb%ae%e5%87%a6%e5%88%86-%e7%94%b3%e7%ab%8b/">仮処分 申立</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e9%87%91%e9%8a%ad%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e5%9b%9e%e5%8f%8e-%e4%be%9d%e9%a0%bc/">金銭トラブル 回収 依頼</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9-%e5%a3%b2%e6%8e%9b%e9%87%91-%e5%9b%9e%e5%8f%8e/">債権 売掛金 回収</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e4%bb%a3%e8%a1%8c-%e5%bc%81%e8%ad%b7%e5%a3%ab/">債権回収 代行 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e8%a3%81%e5%88%a4%e6%89%80/">債権回収 裁判所</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e6%99%82%e5%8a%b9/">債権回収 時効</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%94%af%e6%89%95%e7%9d%a3%e4%bf%83-%e6%89%8b%e7%b6%9a%e3%81%8d/">支払督促 手続き</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e8%b2%b8%e4%bb%98%e9%87%91-%e5%9b%9e%e5%8f%8e/">貸付金 回収</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e8%a8%b4%e8%a8%9f/">債権回収 訴訟</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%8b%85%e4%bf%9d%e6%a8%a9-%e6%8a%b5%e5%bd%93%e6%a8%a9-%e9%81%95%e3%81%84/">担保権 抵当権 違い</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e6%96%b9%e6%b3%95-%e6%b3%95%e4%ba%ba/">債権回収 方法 法人</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a3%b2%e4%b8%8a-%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e/">売上 債権回収</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9-%e5%9b%9e%e5%8f%8e%e3%81%a7%e3%81%8d%e3%81%aa%e3%81%84/">債権 回収できない</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a3%b2%e6%8e%9b-%e5%82%b5%e6%a8%a9-%e6%99%82%e5%8a%b9/">売掛 債権 時効</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%9c%aa%e6%89%95%e3%81%84%e9%87%91-%e5%9b%9e%e5%8f%8e-%e6%96%b9%e6%b3%95/">未払い金 回収 方法</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%bc%81%e8%ad%b7%e5%a3%ab-%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e4%be%9d%e9%a0%bc/">弁護士 債権回収 依頼</a>
+                                    </li>
+                                </ul>
+							</div>
+							<div class="search_category">
+								<h3>消費者トラブルに関するキーワード</h3>
+								
+                                <ul>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9-%e9%81%95%e6%b3%95/">ネットワークビジネス 違法</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%99%af%e5%93%81%e8%a1%a8%e7%a4%ba%e6%b3%95-%e9%81%95%e5%8f%8d/">景品表示法 違反</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%ab%e3%82%b9%e3%83%8f%e3%83%a9-%e5%af%be%e7%ad%96/">カスハラ 対策</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%82%aa%e8%b3%aa-%e3%82%af%e3%83%ac%e3%83%bc%e3%83%a0/">悪質 クレーム</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e9%9b%bb%e5%ad%90%e5%95%86%e5%8f%96%e5%bc%95-%e5%b0%8e%e5%85%a5/">電子商取引 導入</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e7%89%b9%e5%ae%9a%e7%b6%99%e7%b6%9a%e7%9a%84%e5%bd%b9%e5%8b%99%e6%8f%90%e4%be%9b-%e7%be%8e%e5%ae%b9%e5%8c%bb%e7%99%82/">特定継続的役務提供 美容医療</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%ab%e3%82%b9%e3%83%8f%e3%83%a9-%e5%af%be%e5%bf%9c/">カスハラ 対応</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e7%89%b9%e5%ae%9a%e7%b6%99%e7%b6%9a%e7%9a%84%e5%bd%b9%e5%8b%99%e6%8f%90%e4%be%9b-%e3%82%a8%e3%82%b9%e3%83%86/">特定継続的役務提供 エステ</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%af%e3%83%ac%e3%83%bc%e3%83%9e%e3%83%bc-%e5%af%be%e5%bf%9c/">クレーマー 対応</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%af%e3%83%bc%e3%83%aa%e3%83%b3%e3%82%b0%e3%82%aa%e3%83%95-%e5%a5%91%e7%b4%84%e6%9b%b8/">クーリングオフ 契約書</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%90%8d%e8%aa%89%e6%af%80%e6%90%8d-%e7%bd%aa/">名誉毀損 罪</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9-%e5%8b%a7%e8%aa%98/">ネットワークビジネス 勧誘</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%ab%e3%82%b9%e3%83%8f%e3%83%a9-%e8%a8%b4%e3%81%88%e3%82%8b/">カスハラ 訴える</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%af%e3%83%ac%e3%83%bc%e3%83%a0-%e5%af%be%e5%bf%9c-%e9%81%8e%e5%89%b0-%e8%a6%81%e6%b1%82/">クレーム 対応 過剰 要求</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%b6%88%e8%b2%bb%e8%80%85%e5%a5%91%e7%b4%84%e6%b3%95-%e5%8f%96%e6%b6%88%e6%a8%a9/">消費者契約法 取消権</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9-%e7%a8%ae%e9%a1%9e/">ネットワークビジネス 種類</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%af%e3%83%bc%e3%83%aa%e3%83%b3%e3%82%b0%e3%82%aa%e3%83%95-%e5%af%be%e8%b1%a1%e5%a4%96/">クーリングオフ 対象外</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%af%e3%83%ac%e3%83%bc%e3%83%a0-%e7%90%86%e4%b8%8d%e5%b0%bd/">クレーム 理不尽</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%a2%e3%83%b3%e3%82%b9%e3%82%bf%e3%83%bc-%e3%82%af%e3%83%ac%e3%83%bc%e3%83%9e%e3%83%bc-%e5%af%be%e5%bf%9c/">モンスター クレーマー 対応</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%9e%e3%83%bc%e3%83%8f%e3%83%a9%e3%82%b9%e3%83%a1%e3%83%b3%e3%83%88-%e8%a3%81%e5%88%a4/">カスタマーハラスメント 裁判</a>
+                                    </li>
+                                </ul>
+							</div>
+							<div class="search_category">
+								<h3>企業法務に関するキーワード</h3>
+								
+                                <ul>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%8a%b4%e5%8b%99%e7%ae%a1%e7%90%86-%e3%81%a8%e3%81%af/">労務管理 とは</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad-%e3%82%b3%e3%83%b3%e3%83%97%e3%83%a9%e3%82%a4%e3%82%a2%e3%83%b3%e3%82%b9/">企業 コンプライアンス</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a3%b2%e6%8e%9b%e9%87%91-%e8%b2%b7%e6%8e%9b%e9%87%91/">売掛金 買掛金</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a3%b2%e6%8e%9b%e9%87%91-%e6%99%82%e5%8a%b9/">売掛金 時効</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a7%94%e4%bb%bb%e5%a5%91%e7%b4%84-%e6%ba%96%e5%a7%94%e4%bb%bb%e5%a5%91%e7%b4%84-%e9%81%95%e3%81%84/">委任契約 準委任契約 違い</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e8%ab%ad%e6%97%a8%e8%a7%a3%e9%9b%87-%e9%80%80%e8%81%b7%e9%87%91/">諭旨解雇 退職金</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a5%91%e7%b4%84%e6%9b%b8-%e4%bf%ae%e6%ad%a3/">契約書 修正</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%86%85%e9%83%a8%e7%b5%b1%e5%88%b6%e3%82%b7%e3%82%b9%e3%83%86%e3%83%a0-%e4%bc%9a%e7%a4%be%e6%b3%95/">内部統制システム 会社法</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%8a%b4%e5%83%8d%e6%b3%95-%e6%94%b9%e6%ad%a3/">労働法 改正</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e9%80%80%e8%81%b7%e5%8b%a7%e5%a5%a8-%e5%bf%9c%e3%81%98%e3%81%aa%e3%81%84%e5%a0%b4%e5%90%88/">退職勧奨 応じない場合</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8f%e3%83%a9%e3%82%b9%e3%83%a1%e3%83%b3%e3%83%88-%e8%81%b7%e5%a0%b4/">ハラスメント 職場</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a5%91%e7%b4%84%e6%9b%b8-%e3%83%aa%e3%83%bc%e3%82%ac%e3%83%ab%e3%83%81%e3%82%a7%e3%83%83%e3%82%af/">契約書 リーガルチェック</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%ba%96%e5%a7%94%e4%bb%bb%e5%a5%91%e7%b4%84-%e8%ab%8b%e8%b2%a0%e5%a5%91%e7%b4%84/">準委任契約 請負契約</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e7%a7%98%e5%af%86%e4%bf%9d%e6%8c%81%e5%a5%91%e7%b4%84%e6%9b%b8-%e5%be%93%e6%a5%ad%e5%93%a1/">秘密保持契約書 従業員</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a5%91%e7%b4%84%e6%9b%b8-%e4%bd%9c%e6%88%90/">契約書 作成</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e9%a1%a7%e5%95%8f%e5%bc%81%e8%ad%b7%e5%a3%ab-%e3%83%a1%e3%83%aa%e3%83%83%e3%83%88/">顧問弁護士 メリット</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%91%e3%83%af%e3%83%8f%e3%83%a9-%e5%ae%9a%e7%be%a9/">パワハラ 定義</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%82%bb%e3%82%af%e3%83%8f%e3%83%a9-%e5%95%8f%e9%a1%8c/">セクハラ 問題</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%8b%a4%e5%8b%99%e6%85%8b%e5%ba%a6-%e6%82%aa%e3%81%84/">勤務態度 悪い</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%a5%91%e7%b4%84%e6%9b%b8-%e3%83%81%e3%82%a7%e3%83%83%e3%82%af/">契約書 チェック</a>
+                                    </li>
+                                </ul>
+							</div>
+							<div class="search_category">
+								<h3>エリアに関するキーワード</h3>
+								
+                                <ul>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e5%a0%ba%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">ネットワークビジネストラブル 堺市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99-%e6%9d%b1%e5%a4%a7%e9%98%aa%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">企業法務 東大阪市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e7%9b%ae%e9%bb%92%e5%8c%ba-%e5%bc%81%e8%ad%b7%e5%a3%ab/">ネットワークビジネストラブル 目黒区 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e6%9d%b1%e5%a4%a7%e9%98%aa%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">債権回収 東大阪市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e6%96%b0%e5%ae%bf%e5%8c%ba-%e7%9b%b8%e8%ab%87/">消費者トラブル 新宿区 相談</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99-%e5%a0%ba%e5%b8%82-%e7%9b%b8%e8%ab%87/">企業法務 堺市 相談</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e8%a5%bf%e5%a4%a9%e6%ba%80-%e5%bc%81%e8%ad%b7%e5%a3%ab/">ネットワークビジネストラブル 西天満 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99-%e5%a4%a7%e9%98%aa%e5%b8%82-%e7%9b%b8%e8%ab%87/">企業法務 大阪市 相談</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e5%a4%a7%e9%98%aa%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">債権回収 大阪市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e5%8d%83%e4%bb%a3%e7%94%b0%e5%8c%ba-%e5%bc%81%e8%ad%b7%e5%a3%ab/">債権回収 千代田区 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e8%a8%aa%e5%95%8f%e8%b2%a9%e5%a3%b2%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e6%9d%b1%e5%a4%a7%e9%98%aa%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">訪問販売トラブル 東大阪市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99-%e6%96%b0%e5%ae%bf%e5%8c%ba-%e5%bc%81%e8%ad%b7%e5%a3%ab/">企業法務 新宿区 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e6%b6%88%e8%b2%bb%e8%80%85%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e5%a4%a7%e9%98%aa%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">消費者トラブル 大阪市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99-%e5%8d%83%e4%bb%a3%e7%94%b0%e5%8c%ba-%e7%9b%b8%e8%ab%87/">企業法務 千代田区 相談</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e8%a8%aa%e5%95%8f%e8%b2%a9%e5%a3%b2%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e5%a4%a7%e9%98%aa%e5%b8%82-%e5%bc%81%e8%ad%b7%e5%a3%ab/">訪問販売トラブル 大阪市 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e6%b8%8b%e8%b0%b7%e5%8c%ba-%e5%bc%81%e8%ad%b7%e5%a3%ab/">ネットワークビジネストラブル 渋谷区 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e8%a8%aa%e5%95%8f%e8%b2%a9%e5%a3%b2%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e6%96%b0%e5%ae%bf%e5%8c%ba-%e5%bc%81%e8%ad%b7%e5%a3%ab/">訪問販売トラブル 新宿区 弁護士</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e4%bc%81%e6%a5%ad%e6%b3%95%e5%8b%99-%e6%96%b0%e5%ae%bf%e5%8c%ba-%e7%9b%b8%e8%ab%87/">企業法務 新宿区 相談</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e8%a8%aa%e5%95%8f%e8%b2%a9%e5%a3%b2%e3%83%88%e3%83%a9%e3%83%96%e3%83%ab-%e7%9b%ae%e9%bb%92%e5%8c%ba-%e7%9b%b8%e8%ab%87/">訪問販売トラブル 目黒区 相談</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://okamoto-saiken.com/%e3%82%a8%e3%83%aa%e3%82%a2%e3%81%ab%e9%96%a2%e3%81%99%e3%82%8b%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89/%e5%82%b5%e6%a8%a9%e5%9b%9e%e5%8f%8e-%e6%9d%b1%e5%a4%a7%e9%98%aa%e5%b8%82-%e7%9b%b8%e8%ab%87/">債権回収 東大阪市 相談</a>
+                                    </li>
+                                </ul>
+							</div>
+						</article>
+					</div>
+				</div>
+			</section>
+			<section id="staff" class="mfrm">
+				<div class="bg">
+					<div class="inr">
+						<header class="mhead"><h2>弁護士紹介</h2></header>
+						<article class="mbody cfx">
+							<div class="staff">
+								<div class="staff_left">
+									<div class="staff_img">
+										<img src="https://okamoto-saiken.com/wp-content/themes/okamoto/img/img1.jpg" alt="岡本弁護士の写真">
+									</div>
+									<div class="staff_content">
+										<dl>
+											<dt>代表弁護士</dt>
+											<dd><strong>岡本 仁志(おかもと まさし)</strong></dd>
+										</dl>
+									</div>
+								</div>
+								<div class="staff_right">
+									<div class="staff_single">
+										<dl>
+											<dt>ご挨拶</dt>
+											<dd>
+												<p>解決までのスピードに自信があります。債権回収、消費者被害、訪問販売トラブル、ネットワークビジネストラブル、企業トラブルなどでお困りでしたら、法律事務所桃李までお気軽にご相談ください。</p>
+												<br>
+												<p>これまでに培った知識・経験を活用して、問題解決に最適な方法をご提案するだけでなく、プラスアルファとしてクライアント様からお話を聞く姿勢、そしてリーガルサービスを提供する姿勢にも心を配っています。</p>
+												<br>
+												<p>「法律事務所桃李に相談して良かった」とご満足頂ける、そんな安心・信頼の法律サポートを行って参ります。</p>
+											</dd>
+										</dl>
+									</div>
+									<div class="staff_flex">
+										<ul class="staff_items">
+											<li class="staff_item">
+												<dl>
+													<dt>所属団体</dt>
+													<dd>
+														<ul>
+															<li>大阪弁護士会所属</li>
+															<li>大阪弁護士会消費者保護委員会委員および裁判員本部委員</li>
+															<li>刑事弁護委員会委員</li>
+															<li>大阪大学法曹会幹事</li>
+															<li>大阪青年会議所</li>
+														</ul>
+													</dd>
+												</dl>												
+											</li>
+											<li class="staff_item">
+												<dl>
+													<dt>経歴</dt>
+													<dd>
+														<p>大阪大学法学部卒業</p>
+														<p>2005年(平成17年)11月 司法試験合格</p>
+														<p>2006年(平成18年)4月 司法修習生(60期)</p>
+														<p>2007年(平成19年)9月 大阪弁護士会に弁護士登録</p>
+														<p>2015年(平成27年)7月 岡本仁志法律事務所開設</p>
+														<p>2020年(令和2年)7月 法律事務所桃季開設</p>
+													</dd>
+												</dl>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</section>
+			<section id="company" class="mfrm">
+				<div class="bg">
+					<div class="inr">
+						<header class="mhead"><h2>事務所概要</h2></header>
+						<article class="mbody cfx">
+							<div class="company">
+								<div class="company_head">
+									<h3 class="company_heading"><span>最善のリーガルサービスで</span><span>理想的な解決を実現します</span></h3>
+									<div class="company_text">
+										<p>クライアント様の問題を的確に把握し、理想的な解決を実現するためにどんな方法が有効なのか多角的に検討し、考え得る方法の中から最善のリーガルサービスをご提供します。</p>
+										<p>ご自身の希望にかなう解決をお求めでしたら、大阪・北区東天満の法律事務所桃季までご相談ください。</p>
+										<p>信頼の解決力で理想的な解決を目指します。</p>
+									</div>
+								</div>
+								<div class="company_body">
+									<div class="company_left">
+										<table>
+											<tr>
+												<th>事務所名</th>
+												<td>法律事務所桃李</td>
+											</tr>
+											<tr>
+												<th>代表者</th>
+												<td>岡本 仁志(おかもと まさし)</td>
+											</tr>
+											<tr>
+												<th>所在地</th>
+												<td>〒530-0044 大阪市北区東天満1丁目7番17号 東天満ビル7階</td>
+											</tr>
+											<tr>
+												<th>アクセス</th>
+												<td>
+													<p>ＪＲ東西線・学研都市線「大阪天満宮駅」より徒歩3分</p>
+												</td>
+											</tr>
+											<tr>
+												<th>電話番号／FAX番号</th>
+												<td>TEL:050-3188-5207 / FAX:06-6314-6905</td>
+											</tr>
+											<tr>
+												<th>対応時間</th>
+												<td>平日 9:00 -17:00　※事前予約で時間外も対応可能です</td>
+											</tr>
+											<tr>
+												<th>定休日</th>
+												<td>土・日・祝日　※事前予約で時間外も対応可能です</td>
+											</tr>
+										</table>
+									</div>
+									<!-- <div class="company_right">
+										<div class="company_img">
+											<img src="https://okamoto-saiken.com/wp-content/themes/okamoto/img/img2.jpg" alt="岡本弁護士の写真">
+										</div>
+									</div> -->
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+			</section>
+			<section id="access" class="mfrm">
+				<div class="bg">
+					<article class="mbody cfx">
+						<!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.3706483533992!2d135.50641521523212!3d34.695830180435756!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e6dd27c86e71%3A0x47a2f723716149b1!2z44CSNTMwLTAwNDcg5aSn6Ziq5bqc5aSn6Ziq5biC5YyX5Yy66KW_5aSp5rqA77yT5LiB55uu77yU4oiS77yWIOilv-Wkqea6gOOCs-ODvOODiOODk-ODqw!5e0!3m2!1sja!2sjp!4v1565061177896!5m2!1sja!2sjp" width="100%" height="490" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.325547316543!2d135.51333415112444!3d34.69696799082909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e6da79896203%3A0xbc1561d46908f796!2z44CSNTMwLTAwNDQg5aSn6Ziq5bqc5aSn6Ziq5biC5YyX5Yy65p2x5aSp5rqA77yR5LiB55uu77yX4oiS77yR77yXIOadseWkqea6gOODk-ODqyA36ZqO!5e0!3m2!1sja!2sjp!4v1595383857485!5m2!1sja!2sjp" width="100%" height="490" frameborder="0" style="border:0" allowfullscreen></iframe>
+					</article>
+				</div>
+			</section>
+		</div>
+		<!-- //main -->
+	</div>
+	<footer id="footer">
+		<div class="lead">
+			<p>債権回収、消費者被害、訪問販売トラブル、ネットワークビジネストラブル、企業トラブルは法律の専門家への相談が解決の近道です</p>
+		</div>
+		<div id="footnav" class="inr">
+			<nav id="fnav">
+				<ul>
+					<li><a href="https://okamoto-saiken.com/privacypolicy/">個人情報保護方針</a></li>
+					<li><a href="https://okamoto-saiken.com/inq/">お問合せ</a></li>
+				</ul>
+			</nav>
+			<p class="copyright">&copy; 法律事務所桃李 All rights Reserved.</p>
+		</div>
+	</footer>
+
+	<!-- //footer -->
+	<p id="pagetop"><a href="javascript:void(0);">ページトップへ</a></p>
+
+	<div class="footer_menu">
+		<ul>
+			<li class="menu"><a href="#gnav"><span>MENU</span></a></li>
+			<li class="tel"><a href="tel:05031885207"><span>TEL</span></a></li>
+			<li class="mail"><a href="https://okamoto-saiken.com/inq/"><span>MAIL</span></a></li>
+		</ul>
+	</div>	
+</div>
+<!-- //container -->
+<script src="main.js"></script>
+</body>
+</html>

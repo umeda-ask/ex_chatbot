@@ -1,0 +1,395 @@
+#chatbot {
+    position: fixed;
+    bottom: 5%;
+    right: 2%;
+    width: 30%;
+    height: 92%;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: bottom right;
+    transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+#chatbot.show {
+    opacity: 1;
+    transform: scale(1);
+    display: flex;
+    z-index: 99999
+}
+
+#chatbotHeader {
+    background: #0078d4;
+    color: white;
+    padding: 3%;
+    cursor: pointer;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbotHeader span {
+    font-size: 2vw;
+}
+
+#phoneText{
+    color:#000;
+}
+
+#personIcon {
+    width: 3vw; /* アイコンの大きさを調整 */
+    height: 3vw; /* アイコンの大きさを調整 */
+    margin-right: 1vw; /* アイコンとテキストの間にスペースを追加 */
+}
+
+#chatbotPhone {
+    background: #D5E1ED; /* 背景色を設定 */
+    padding: 1%; /* 余白を設定 */
+    text-align: center; /* テキストを中央揃え */
+    font-size: 1.2vw; /* フォントサイズを小さく設定 */
+    border-top: 1px solid #ccc; /* 上部に境界線を追加 */
+    border-bottom: 1px solid #ccc; /* 下部に境界線を追加 */
+}
+
+#phoneLink {
+    color: #0078d4; /* リンクの色を設定 */
+    text-decoration: none; /* リンクの下線を消す */
+    font-size: 1.5vw; /* リンクのフォントサイズを大きく設定 */
+}
+
+#phoneLink:hover {
+    text-decoration: underline; /* ホバー時に下線を表示 */
+}
+
+#chatbotMessages {
+    flex: 1;
+    padding: 3%;
+    overflow-y: scroll;
+    background-color: #f0f0f0; /* Background similar to ASKUL's message area */
+}
+
+#chatbotMessages ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#chatbotMessages li {
+    margin-bottom: 3%;
+    display: flex;
+}
+
+.left {
+    justify-content: flex-start;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.chatbot-left, .chatbot-right {
+    max-width: 70%;
+    padding: 3%;
+    border-radius: 10px;
+    position: relative;
+    word-wrap: break-word;
+    color: #000; /* 吹き出しの文字色を黒に設定 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を追加 */
+}
+
+.chatbot-left {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    font-size: 1.5vw;
+}
+
+.chatbot-left::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -20px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-right-color: #ffffff;
+}
+
+.chatbot-right {
+    background: #dcf8c6;
+}
+
+.chatbot-right::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: -20px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-left-color: #dcf8c6;
+}
+
+#chatbotInput {
+    display: flex;
+    padding: 3%;
+    border-top: 1px solid #ccc;
+    background: #ffffff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#chatbotInput input {
+    flex: 1;
+    padding: 3%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 1%;
+}
+
+#sendMessage {
+    padding: 3%;
+    background: #0078d4;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#sendMessage:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+#openChatbot {
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    width: 6vw; /* Set width based on viewport width */
+    height: 6vw; /* Set height equal to width to keep it square */
+    background: #0078d4;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* 影を強調 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, opacity 0.1s ease; /* アイコンの拡大 */
+    z-index: 99999;
+}
+
+#openChatbot.hide {
+    transform: scale(0);
+    opacity: 0;
+}
+
+#openChatbot img {
+    width: 50%; /* Adjust based on parent size */
+    height: 50%; /* Adjust based on parent size */
+}
+
+.choice-button {
+    background: #0078d4;
+    color: white;
+    border: none;
+    padding: 2%;
+    margin: 1% 0;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    width: 16vw; /* 固定幅を設定 */
+    transition: background-color 0.3s;
+}
+
+
+.choice-button:hover {
+    background: #005bb5;
+}
+
+.choice-button-disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .choice-button {
+        width: 45vw; /* スマホの場合の幅を設定 */
+        height: 40px;
+    }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+}
+
+.loading span {
+    display: inline-block;
+    margin: 0 2px;
+    width: 0.8vw;
+    height: 0.8vw;
+    background-color: #000;
+    border-radius: 50%;
+    animation: blink 1.4s infinite both;
+}
+
+.loading span:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.loading span:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.loading span:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@media (max-width: 768px) {
+    .loading span {
+        width: 2.5vw;
+        height: 2.5vw;
+    }
+}
+
+@media (max-width: 768px) {
+    #chatbot {
+        width: 92%;
+        height: 92%;
+    }
+
+    #openChatbot {
+        width: 17vw; /* Increase width for mobile devices */
+        height: 17vw; /* Increase height for mobile devices */
+    }
+
+    #openChatbot img {
+        width: 50%; /* Adjust based on parent size */
+        height: 50%; /* Adjust based on parent size */
+    }
+
+    #chatbotHeader span {
+        font-size: 6vw;
+    }
+}
+.choice-button {
+    font-size: 1.4vw; /* ボタンの文字を少し大きく */
+}
+@media (max-width: 768px) {
+    .choice-button {
+        font-size: 4vw; /* スマホ用にさらに大きく */
+    }
+}
+
+#openChatbot {
+    ...
+    position: relative;
+}
+
+#openChatbotTooltip {
+    display: none;
+    position: absolute;
+    top: -3vw; /* Adjust tooltip position based on viewport size */
+    left: -12%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 0.5vw 1vw;
+    border-radius: 5px;
+    font-size: 1.2vw;
+    white-space: nowrap;
+}
+
+#openChatbotTooltip {
+    display: block;
+}
+
+#openChatbotTooltip::after {
+    content: "";
+    position: absolute;
+    bottom: -0.5vw; /* Position the arrow */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0.5vw 0.5vw 0 0.5vw;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+@media (max-width: 768px) {
+    #openChatbotTooltip {
+        display: none;
+    }
+}
+
+#openChatbot {
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    width: 6vw; /* Set width based on viewport width */
+    height: 6vw; /* Set height equal to width to keep it square */
+    background: #0078d4;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* 影を強調 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, opacity 0.1s ease; /* アイコンの拡大 */
+    z-index: 99999;
+}
+
+#openChatbot:hover {
+    transform: scale(1.1); /* ホバー時にアイコンを拡大 */
+}
+
+#openChatbot img {
+    width: 50%; /* Adjust based on parent size */
+    height: 50%; /* Adjust based on parent size */
+}
+
+@media (max-width: 768px) {
+    #openChatbot {
+        width: 17vw; /* Increase width for mobile devices */
+        height: 17vw; /* Increase height for mobile devices */
+        bottom: 20%;
+        right: 5%;
+        z-index: 99999;
+    }
+
+    #openChatbot:hover {
+        transform: none; /* スマホ時に拡大しない */
+    }
+
+    #openChatbot img {
+        width: 50%; /* Adjust based on parent size */
+        height: 50%; /* Adjust based on parent size */
+    }
+    
+    .chatbot-left {
+        font-size: 4vw;
+    }
+    
+    #chatbotPhone {
+        font-size: 4vw; /* フォントサイズを小さく設定 */
+    }
+    
+    #phoneLink {
+        font-size: 5vw; /* リンクのフォントサイズを大きく設定 */
+    }
+    
+}
