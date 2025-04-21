@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // CSSの動的読み込み
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'styles.css';
+    link.href = 'https://umeda-ask.github.io/ex_chatbot/styles.css';
     document.head.appendChild(link);
 
     // HTML構造の動的生成
