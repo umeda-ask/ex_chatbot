@@ -223,7 +223,7 @@
 @media (max-width: 768px) {
     .choice-button {
         width: 45vw; /* スマホの場合の幅を設定 */
-        height: 40px;
+        height: auto !important;
     }
 }
 
