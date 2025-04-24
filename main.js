@@ -798,17 +798,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
                     robotCount++;
                     
-                    if (chatKeys[robotCount] === 'q37') {
+                    if (key === 'q37') {
                         const current_time = new Date().toLocaleString();
                         emailjs.send("askchatmail", "template_ufwmbjq", {
-                            user_name: userName,
-                            user_address: userAddress,
-                            user_phone: userPhone,
-                            consultation_type: userData[1] || "",
-                            consultation_topic: userData[2] || "",
-                            consultation_detail: userData[3] || "",
-                            preferred_contact_method: userData[7] || "",
-                            user_inquiry: userInquiry,
                             current_time: current_time
                         }).then(function(response) {
                             console.log("Email sent:", response.status, response.text);
