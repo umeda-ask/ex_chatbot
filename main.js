@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // EmailJSのスクリプト動的読み込み
     const script = document.createElement('script');
-    script.src = "https://cdn.emailjs.com/dist/email.min.js";
+    script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js";
     script.onload = () => {
         emailjs.init("hugWN77kXtanuGGDO");
     };
@@ -790,9 +790,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     choiceField.appendChild(choiceButton);
                 });
 
-                sendMessageButton.disabled = true;
+                 // ボタン選択項目の場合のみ非活性にする
+                if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
+                  sendMessageButton.disabled = true;
+                } else {
+                    sendMessageButton.disabled = false;
+                }
             } else {
                 div.textContent = current.title || current.text;
+  
+                // テキスト入力の場合は送信ボタンを活性
                 sendMessageButton.disabled = false;
 
                 if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
@@ -800,8 +807,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     
                     if (key === 'q37') {
                         const current_time = new Date().toLocaleString();
+                        const messageHistory = userData.map((v, i) => `${i + 1}. ${v}`).join('\n');
+
                         emailjs.send("askchatmail", "template_ufwmbjq", {
-                            current_time: current_time
+                            current_time: current_time,
+                            selectedChoices: userData.join('\n'),
+                            message: messageHistory
                         }).then(function(response) {
                             console.log("Email sent:", response.status, response.text);
                         }, function(error) {
@@ -815,7 +826,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             scrollChatToBottom();
 
-            sendMessageButton.disabled = false;
         }, 2000);
     }
 
