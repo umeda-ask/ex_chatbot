@@ -882,6 +882,10 @@ function robotOutput() {
         if (e.textContent === '一つ前の質問に戻る') {
             if (historyStack.length > 0) {
                 robotCount = historyStack.pop();
+                if (userData.length > 0) {
+                    userData.pop();  // 戻るときに回答を1つ削除
+                    userCount--;     // カウントも戻す（任意）
+                }
                 robotOutput();
             }
             return;
