@@ -798,8 +798,22 @@ function robotOutput() {
                 <strong>これまでの入力内容：</strong><br>
                 ${userData.map((msg, i) => `${i + 1}. ${msg}`).join('<br>')}
             `;
-            sendMessageButton.disabled = false;
-            return; // 次に進まないように止める（ここ重要）
+
+            const choiceField = document.createElement('div');
+            choiceField.id = `q-${robotCount}`;
+            div.appendChild(choiceField);
+
+            current.choices.forEach((choice, i) => {
+                const choiceButton = document.createElement('button');
+                choiceButton.id = `q-${robotCount}-${i}`;
+                choiceButton.setAttribute('onclick', 'pushChoice(this)');
+                choiceButton.classList.add('choice-button');
+                choiceButton.textContent = choice;
+                choiceField.appendChild(choiceButton);
+            });
+
+            sendMessageButton.disabled = true; // ボタン選択方式にするため
+            return;
         }
 
         // --- 通常処理 ---
