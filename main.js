@@ -661,7 +661,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "choices": [ "一つ前の質問に戻る"]
         },
         "q36": {
-          "title": "当事務所とのご相談内容とお客様のお名前、当事務所との相談方法、ご相談者様の連絡先については、いかがでしょうか？\nよろしければ「はい」ボタンを、違っていれば「1つ戻る」ボタンで該当の質問項目まで戻って、正しい内容を選択・記入してください。",
+          "title": "当事務所とのご相談内容とお客様のお名前、当事務所との相談方法、ご相談者様の連絡先については、いかのとおりですね？\nよろしければ「はい」ボタンを、違っていれば「1つ戻る」ボタンで該当の質問項目まで戻って、正しい内容を選択・記入してください。",
           "choices": ["はい", "一つ前の質問に戻る"]
         },
         "q37": {
@@ -743,91 +743,126 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     function scrollChatToBottom() {
-        const chatField = document.getElementById('chatbotMessages');
-        chatField.scrollTop = chatField.scrollHeight;
+        const messagesContainer = document.getElementById('chatbotMessages');
+        const messageItems = messagesContainer.querySelectorAll('#chatbot-ul li');
+
+        if (messageItems.length === 0) return;
+
+        // 最後の左側メッセージ（ロボット発言）を探す（逆から検索）
+        let targetMessage = null;
+        for (let i = messageItems.length - 1; i >= 0; i--) {
+            if (messageItems[i].querySelector('.chatbot-left')) {
+                targetMessage = messageItems[i];
+                break;
+            }
+        }
+
+        if (!targetMessage) return;
+
+        // スクロール実行
+        targetMessage.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start' // 吹き出しの上端をチャット画面の上に合わせる
+        });
     }
 
-    function robotOutput() {
-        if (robotCount >= chatKeys.length) return;
+function robotOutput() {
+    if (robotCount >= chatKeys.length) return;
 
-        const key = chatKeys[robotCount];
-        const current = chatList[key];
-        if (!current) return;
+    const key = chatKeys[robotCount];
+    const current = chatList[key];
+    if (!current) return;
 
-        const ul = document.getElementById('chatbot-ul');
-        const li = document.createElement('li');
-        li.classList.add('left');
-        ul.appendChild(li);
+    const ul = document.getElementById('chatbot-ul');
+    const li = document.createElement('li');
+    li.classList.add('left');
+    ul.appendChild(li);
 
-        const robotLoadingDiv = document.createElement('div');
-        robotLoadingDiv.classList.add('chatbot-left');
-        robotLoadingDiv.innerHTML = '<div class="loading"><span></span><span></span><span></span></div>';
-        li.appendChild(robotLoadingDiv);
-        scrollChatToBottom();
+    const robotLoadingDiv = document.createElement('div');
+    robotLoadingDiv.classList.add('chatbot-left');
+    robotLoadingDiv.innerHTML = '<div class="loading"><span></span><span></span><span></span></div>';
+    li.appendChild(robotLoadingDiv);
+    scrollChatToBottom();
 
-        setTimeout(() => {
-            robotLoadingDiv.remove();
-            const div = document.createElement('div');
-            div.classList.add('chatbot-left');
-            li.appendChild(div);
+    setTimeout(() => {
+        robotLoadingDiv.remove();
+        const div = document.createElement('div');
+        div.classList.add('chatbot-left');
+        li.appendChild(div);
 
-            if (current.choices && current.choices.length > 0) {
-                const choiceField = document.createElement('div');
-                choiceField.id = `q-${robotCount}`;
-                div.appendChild(choiceField);
+        // --- ✅ q36は特別処理 ---
+        if (key === 'q36') {
+            div.innerHTML = `
+                ${current.title.replace(/\n/g, '<br>')}
+                <br><br>
+                <strong>これまでの入力内容：</strong><br>
+                ${userData.map((msg, i) => `${i + 1}. ${msg}`).join('<br>')}
+            `;
+            sendMessageButton.disabled = false;
+            return; // 次に進まないように止める（ここ重要）
+        }
 
-                const choiceTitle = document.createElement('div');
-                choiceTitle.classList.add('choice-title');
-                choiceTitle.textContent = current.title;
-                choiceField.appendChild(choiceTitle);
+        // --- 通常処理 ---
+        if (current.choices && current.choices.length > 0) {
+            const choiceField = document.createElement('div');
+            choiceField.id = `q-${robotCount}`;
+            div.appendChild(choiceField);
 
-                current.choices.forEach((choice, i) => {
-                    const choiceButton = document.createElement('button');
-                    choiceButton.id = `q-${robotCount}-${i}`;
-                    choiceButton.setAttribute('onclick', 'pushChoice(this)');
-                    choiceButton.classList.add('choice-button');
-                    choiceButton.textContent = choice;
-                    choiceField.appendChild(choiceButton);
-                });
+            const choiceTitle = document.createElement('div');
+            choiceTitle.classList.add('choice-title');
+            choiceTitle.textContent = current.title;
+            choiceField.appendChild(choiceTitle);
 
-                 // ボタン選択項目の場合のみ非活性にする
-                if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
-                  sendMessageButton.disabled = true;
-                } else {
-                    sendMessageButton.disabled = false;
-                }
+            current.choices.forEach((choice, i) => {
+                const choiceButton = document.createElement('button');
+                choiceButton.id = `q-${robotCount}-${i}`;
+                choiceButton.setAttribute('onclick', 'pushChoice(this)');
+                choiceButton.classList.add('choice-button');
+                choiceButton.textContent = choice;
+                choiceField.appendChild(choiceButton);
+            });
+
+            // ボタン選択のときは送信ボタンを無効化
+            if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
+                sendMessageButton.disabled = true;
             } else {
-                div.textContent = current.title || current.text;
-  
-                // テキスト入力の場合は送信ボタンを活性
                 sendMessageButton.disabled = false;
-
-                if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
-                    robotCount++;
-                    
-                    if (key === 'q37') {
-                        const current_time = new Date().toLocaleString();
-                        const messageHistory = userData.map((v, i) => `${i + 1}. ${v}`).join('\n');
-
-                        emailjs.send("askchatmail", "template_ufwmbjq", {
-                            current_time: current_time,
-                            selectedChoices: userData.join('\n'),
-                            message: messageHistory
-                        }).then(function(response) {
-                            console.log("Email sent:", response.status, response.text);
-                        }, function(error) {
-                            console.error("Email send failed:", error);
-                        });
-                    }                    
-                    
-                    robotOutput();
-                }
             }
 
-            scrollChatToBottom();
+        } else {
+            div.textContent = current.title || current.text;
+            sendMessageButton.disabled = false;
 
-        }, 2000);
-    }
+            if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
+                robotCount++;
+
+                // q37なら送信処理して終了
+                if (key === 'q37') {
+                    const current_time = new Date().toLocaleString();
+                    const messageHistory = userData.map((v, i) => `${i + 1}. ${v}`).join('\n');
+
+                    emailjs.send("askchatmail", "template_ufwmbjq", {
+                        current_time: current_time,
+                        selectedChoices: userData.join('\n'),
+                        message: messageHistory
+                    }).then(function(response) {
+                        console.log("Email sent:", response.status, response.text);
+                    }, function(error) {
+                        console.error("Email send failed:", error);
+                    });
+
+                    return; // 二重送信防止
+                }
+
+                robotOutput();
+            }
+        }
+
+        scrollChatToBottom();
+
+    }, 2000);
+}
+
 
     window.pushChoice = function(e) {
         if (e.textContent === '一つ前の質問に戻る') {
