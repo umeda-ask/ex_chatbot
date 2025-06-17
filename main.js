@@ -738,7 +738,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 sendMessageButton.disabled = false;
             }, 2100);
 
-            scrollChatToBottom();
+            // DOM追加処理がすべて終わったあとに
+            setTimeout(() => {
+                scrollChatToBottom(); // 遅延スクロール
+            }, 100);
         }
     };
 
@@ -812,19 +815,9 @@ function robotOutput() {
                 choiceField.appendChild(choiceButton);
             });
 
-            sendMessageButton.disabled = true;
-            
-            scrollChatToBottom(); // ← ✅ q36専用処理にも追加する
-
+            sendMessageButton.disabled = true; // ボタン選択方式にするため
             return;
         }
-
-        // --- 通常処理 ---
-        // ... 既存のchoices処理やテキスト表示処理の後ろに追加 ...
-        
-        scrollChatToBottom(); // ← ✅ ここでも必ず追加
-
-    }, 2000);
 
         // --- 通常処理 ---
         if (current.choices && current.choices.length > 0) {
@@ -882,7 +875,10 @@ function robotOutput() {
             }
         }
 
-        scrollChatToBottom();
+        // DOM追加処理がすべて終わったあとに
+        setTimeout(() => {
+            scrollChatToBottom(); // 遅延スクロール
+        }, 100);
 
     }, 2000);
 }
