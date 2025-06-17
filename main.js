@@ -785,7 +785,10 @@ function robotOutput() {
     robotLoadingDiv.classList.add('chatbot-left');
     robotLoadingDiv.innerHTML = '<div class="loading"><span></span><span></span><span></span></div>';
     li.appendChild(robotLoadingDiv);
-    scrollChatToBottom();
+    // DOM追加処理がすべて終わったあとに
+    setTimeout(() => {
+        scrollChatToBottom(); // 遅延スクロール
+    }, 100);
 
     setTimeout(() => {
         robotLoadingDiv.remove();
