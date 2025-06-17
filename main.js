@@ -943,4 +943,5 @@ function robotOutput() {
     };
 
     robotOutput();
+    setTimeout(scrollChatToBottom, 2500); // メッセージ表示後にスクロール
 });
