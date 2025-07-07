@@ -56,6 +56,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
             "起業や法人設立に関すること",
             "●●行政書士事務所に関すること",
             "お客様のご相談内容が、上記のどれに当てはまるかわからない"
+          ],
+          "next":[
+            "q2",
+            "q7",
+            "q18",
+            "q23",
+            "q27",
+            "q29",
           ]
         },
         "q2": {
@@ -66,6 +74,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             "遺産分割協議書について",
             "贈与について",
             "一つ前の質問に戻る"
+          ],
+          "next":[
+            "q3",
+            "q4",
+            "q5",
+            "q6"
           ]
         },
         "q3": {
@@ -168,6 +182,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
             "古物商について",
             "その他の許認可が必要な営業について",
             "一つ前の質問に戻る"
+          ],
+          "next":[
+            "q8",
+            "q9",
+            "q10",
+            "q11",
+            "q12",
+            "q13",
+            "q14",
+            "q15",
+            "q16",
+            "q17"
           ]
         },
         "q8": {
@@ -416,7 +442,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
             "離婚協議書について",
             "その他の法務書類について",
             "一つ前の質問に戻る"
+          ],
+          "next":[
+            "q19",
+            "q20",
+            "q21",
+            "q22",
           ]
+          
         },
         "q19": {
           "title": "契約書についてのご相談内容はどんなことですか？",
@@ -521,6 +554,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
             "個人事業主について",
             "法人設立について",
             "一つ前の質問に戻る"
+          ],
+          "next":[
+            "q24",
+            "q25",
+            "q26"
           ]
         },
         "q24": {
@@ -600,6 +638,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "choices": [
             "●●行政書士事務所について",
             "一つ前の質問に戻る"
+          ],
+          "next": [
+            "q28"
           ]
         },
         "q28": {
@@ -916,34 +957,44 @@ function robotOutput() {
         }
         e.classList.remove('choice-button-disabled');
 
-        let nextKey = '';
-        if (currentKey === 'q1') {
-            switch (choiceIndex) {
-                case 0: nextKey = 'q2'; break;
-                case 1: nextKey = 'q7'; break;
-                case 2: nextKey = 'q18'; break;
-                case 3: nextKey = 'q23'; break;
-                case 4: nextKey = 'q27'; break;
-                case 5: nextKey = 'q29'; break;
-                default: nextKey = 'q29';
-            }
-        } else if (currentKey === 'q2') {
-            switch (choiceIndex) {
-                case 0: nextKey = 'q3'; break;
-                case 1: nextKey = 'q4'; break;
-                case 2: nextKey = 'q5'; break;
-                case 3: nextKey = 'q6'; break;
-                default: nextKey = 'q30';
-            }
-        } else if (/^q\d+$/.test(currentKey) && chatKeys.includes(`${currentKey}_detail`)) {
-            nextKey = `${currentKey}_detail`;
-        } else if (currentKey.endsWith('_detail')) {
-            nextKey = 'q30';
-        } else {
-            const currentIndex = chatKeys.indexOf(currentKey);
-            nextKey = chatKeys[currentIndex + 1];
-        }
-
+        // let nextKey = '';
+        // if (currentKey === 'q1') {
+        //     switch (choiceIndex) {
+        //         case 0: nextKey = 'q2'; break;
+        //         case 1: nextKey = 'q7'; break;
+        //         case 2: nextKey = 'q18'; break;
+        //         case 3: nextKey = 'q23'; break;
+        //         case 4: nextKey = 'q27'; break;
+        //         case 5: nextKey = 'q29'; break;
+        //         default: nextKey = 'q29';
+        //     }
+        // } else if (currentKey === 'q2') {
+        //     switch (choiceIndex) {
+        //         case 0: nextKey = 'q3'; break;
+        //         case 1: nextKey = 'q4'; break;
+        //         case 2: nextKey = 'q5'; break;
+        //         case 3: nextKey = 'q6'; break;
+        //         default: nextKey = 'q30';
+        //     }
+        // } else if (/^q\d+$/.test(currentKey) && chatKeys.includes(`${currentKey}_detail`)) {
+        //     nextKey = `${currentKey}_detail`;
+        // } else if (currentKey.endsWith('_detail')) {
+        //     nextKey = 'q30';
+        // } else {
+        //     const currentIndex = chatKeys.indexOf(currentKey);
+        //     nextKey = chatKeys[currentIndex + 1];
+        // }
+      let nextKey = '';
+      if (current.next && current.next.length > choiceIndex) {
+          nextKey = current.next[choiceIndex];
+      } else if (/^q\d+$/.test(currentKey) && chatKeys.includes(`${currentKey}_detail`)) {
+          nextKey = `${currentKey}_detail`;
+      } else if (currentKey.endsWith('_detail')) {
+          nextKey = 'q30';
+      } else {
+          const currentIndex = chatKeys.indexOf(currentKey);
+          nextKey = chatKeys[currentIndex + 1];
+      }
         const nextIndex = chatKeys.indexOf(nextKey);
         if (nextIndex !== -1) {
             robotCount = nextIndex;
