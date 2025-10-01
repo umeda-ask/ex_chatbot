@@ -13,7 +13,7 @@
 
   /* ===== 2) 設定 ===== */
   // ★GASのWebアプリURL（/exec）に差し替え
-  const GAS_ENDPOINT = 'https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXX/exec';
+  const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwwhFigdlEU4kg0Qi6Ws1JDOF_zzlwiYAwYRmu29q4/dev';
 
   /* ===== 3) CSSロード ===== */
   (function addCSS(){
@@ -378,6 +378,5 @@
 
   /* 初回メッセージ */
   robotOutput();
-}); // ← 元の addEventListener の閉じカッコ
 }); // ← 追加：initWhenReady の閉じ
 </script>
