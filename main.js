@@ -1,14 +1,15 @@
 <script>
+
 'use strict';
 
-/* ===== 1) いつ読み込んでも初期化されるラッパー ===== */
-(function initWhenReady(fn){
+// ← 追加：DOMContentLoaded 済みでも初期化を走らせるラッパー
+(function initWhenReady(start) {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fn);
+    document.addEventListener('DOMContentLoaded', start, { once: true });
   } else {
-    fn();
+    start();
   }
-})(function initChatbot(){
+})(function initChatbot() {
 
   /* ===== 2) 設定 ===== */
   // ★GASのWebアプリURL（/exec）に差し替え
@@ -377,5 +378,6 @@
 
   /* 初回メッセージ */
   robotOutput();
-});
+}); // ← 元の addEventListener の閉じカッコ
+}); // ← 追加：initWhenReady の閉じ
 </script>
