@@ -772,6 +772,13 @@ const form = window.__chatForm;
 
             const currentKey = chatKeys[robotCount];
 
+            if (currentKey === "q29") {form.add_msg = message;} // 追加メッセージ
+            if (currentKey === "q30") {form.other_msg = message;} // その他に決まっている（決めている）ことやわからないこと
+            if (currentKey === "q31") {form.profs = message;} // 次にお客様のお名前、連絡先などについて
+            if (currentKey === "q32") {form.name = message;}
+            if (currentKey === "q34") {form.phone = message;}
+            if (currentKey === "q35") {form.email = message;}
+
             if (["q29", "q30", "q31", "q32", "q34", "q35"].includes(currentKey)) {
                 historyStack.push(robotCount);
                 robotCount++;
@@ -906,6 +913,8 @@ if (key === 'q37') {
   const current_time = new Date().toLocaleString();
   const messageHistory = userData.map((v,i)=>`${i+1}. ${v}`).join('\n');
 
+  // 20251007_志茂
+  const text = (form.add_msg || '') + (form.other_msg || '') + (form.profs || '');
   const payload = {
     current_time,
     selectedChoices: userData.join('\n'),
@@ -913,10 +922,22 @@ if (key === 'q37') {
     name: form.name || '',
     phone: form.phone || '',
     email: form.email || '',
-    preferred: form.preferred || '',
+    preferred: text || '',
     path: (form.path && form.path.length ? form.path.join(' > ') : ''),
     freeText: (form.freeTexts && form.freeTexts.length ? form.freeTexts.join('\n\n') : '')
   };
+  // ↓もともと
+  // const payload = {
+  //   current_time,
+  //   selectedChoices: userData.join('\n'),
+  //   message: messageHistory,
+  //   name: form.name || '',
+  //   phone: form.phone || '',
+  //   email: form.email || '',
+  //   preferred: form.preferred || '',
+  //   path: (form.path && form.path.length ? form.path.join(' > ') : ''),
+  //   freeText: (form.freeTexts && form.freeTexts.length ? form.freeTexts.join('\n\n') : ''),
+  // };
 
   // 既存のメール送信
   if (window.emailjs) {
