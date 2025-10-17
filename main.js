@@ -916,9 +916,9 @@ if (key === 'q37') {
   // 20251007_志茂
   const text = (form.add_msg || '') + (form.other_msg || '') + (form.profs || '');
   const payload = {
-    current_time,
+//    current_time,
     selectedChoices: userData.join('\n'),
-    message: messageHistory,
+//    message: messageHistory,
     name: form.name || '',
     phone: form.phone || '',
     email: form.email || '',
@@ -1044,7 +1044,7 @@ if (key === 'q37') {
     robotOutput();
 });
 
-const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxOPkNNVFvgFsv1l3o_6R9rEhHzvbHhBgeZWhhPNKoTS5Co7Cz9f54Ytmd-2igVcWgX/exec';
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwNvR0x8uo0nKOlzn5DjmNSdOm2OHKBm3QA5QI8MvJznvjyfxPYDRfk0BZbRM8De8pK/exec';
 
 // GAS に CORS なしで送る：hidden form POST 方式
 function sendToGoogleSheet(payload) {
