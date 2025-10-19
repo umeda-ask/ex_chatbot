@@ -910,51 +910,42 @@ function robotOutput() {
                 robotCount++;
 
 if (key === 'q37') {
+  // -------------------- q37: データ送信処理 --------------------
   const current_time = new Date().toLocaleString();
-  const messageHistory = userData.map((v,i)=>`${i+1}. ${v}`).join('\n');
-
-  // 20251007_志茂
+  
+  // 1. EmailJS用に冗長なフィールドを含むペイロードを定義（テンプレート依存のため維持）
   const text = (form.add_msg || '') + (form.other_msg || '') + (form.profs || '');
-  const payload = {
-//    current_time,
+  const emailPayload = {
     selectedChoices: userData.join('\n'),
-//    message: messageHistory,
     name: form.name || '',
     phone: form.phone || '',
     email: form.email || '',
-    preferred: text || '',
+    preferred: text || '', 
     path: (form.path && form.path.length ? form.path.join(' > ') : ''),
     freeText: (form.freeTexts && form.freeTexts.length ? form.freeTexts.join('\n\n') : '')
   };
-  // ↓もともと
-  // const payload = {
-  //   current_time,
-  //   selectedChoices: userData.join('\n'),
-  //   message: messageHistory,
-  //   name: form.name || '',
-  //   phone: form.phone || '',
-  //   email: form.email || '',
-  //   preferred: form.preferred || '',
-  //   path: (form.path && form.path.length ? form.path.join(' > ') : ''),
-  //   freeText: (form.freeTexts && form.freeTexts.length ? form.freeTexts.join('\n\n') : ''),
-  // };
 
-  // 既存のメール送信
+  // 2. GAS用に必要な4項目のみに絞ったペイロードを定義（重複回避）
+  const gasPayload = {
+    selectedChoices: userData.join('\n'),
+  };
+
+  // 既存のメール送信 (EmailJS用ペイロードを使用)
   if (window.emailjs) {
-    emailjs.send("askchatmail","template_ufwmbjq", payload)
+    emailjs.send("askchatmail","template_ufwmbjq", emailPayload)
       .then(r=>console.log("Email sent:", r.status, r.text))
       .catch(e=>console.error("Email send failed:", e));
   }
 
-  // スプレッドシート送信（これが E 列以降を埋める）
-  sendToGoogleSheet(payload).then(ok=>{
+  // スプレッドシート送信（項目を限定した gasPayload を使用）
+  sendToGoogleSheet(gasPayload).then(ok=>{
     console.log('[GAS] sheet append:', ok ? 'success' : 'failed');
   });
 
   return; // 二重送信防止
 }
 
-                robotOutput();
+                robotOutput(); // 【修正】q37以外はここで次の質問に進む
             }
         }
 
@@ -996,33 +987,6 @@ if (key === 'q37') {
         }
         e.classList.remove('choice-button-disabled');
 
-        // let nextKey = '';
-        // if (currentKey === 'q1') {
-        //     switch (choiceIndex) {
-        //         case 0: nextKey = 'q2'; break;
-        //         case 1: nextKey = 'q7'; break;
-        //         case 2: nextKey = 'q18'; break;
-        //         case 3: nextKey = 'q23'; break;
-        //         case 4: nextKey = 'q27'; break;
-        //         case 5: nextKey = 'q29'; break;
-        //         default: nextKey = 'q29';
-        //     }
-        // } else if (currentKey === 'q2') {
-        //     switch (choiceIndex) {
-        //         case 0: nextKey = 'q3'; break;
-        //         case 1: nextKey = 'q4'; break;
-        //         case 2: nextKey = 'q5'; break;
-        //         case 3: nextKey = 'q6'; break;
-        //         default: nextKey = 'q30';
-        //     }
-        // } else if (/^q\d+$/.test(currentKey) && chatKeys.includes(`${currentKey}_detail`)) {
-        //     nextKey = `${currentKey}_detail`;
-        // } else if (currentKey.endsWith('_detail')) {
-        //     nextKey = 'q30';
-        // } else {
-        //     const currentIndex = chatKeys.indexOf(currentKey);
-        //     nextKey = chatKeys[currentIndex + 1];
-        // }
       let nextKey = '';
       if (current.next && current.next.length > choiceIndex) {
           nextKey = current.next[choiceIndex];
@@ -1044,7 +1008,7 @@ if (key === 'q37') {
     robotOutput();
 });
 
-const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwNvR0x8uo0nKOlzn5DjmNSdOm2OHKBm3QA5QI8MvJznvjyfxPYDRfk0BZbRM8De8pK/exec';
+const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwxv3ucfLfw9-Cpy4Q9lUFUYztb2FitN1N3b08nJ17GhYszNSRivt6rLEZuBsZvT5XS/exec';
 
 // GAS に CORS なしで送る：hidden form POST 方式
 function sendToGoogleSheet(payload) {
@@ -1088,4 +1052,3 @@ function sendToGoogleSheet(payload) {
     }
   });
 }
-
