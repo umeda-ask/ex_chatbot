@@ -411,12 +411,15 @@
     background-color: #06C755;
     color: #FFFFFF;
     border: none;
-    padding: 10px 13px 6px 13px;
+    padding: 6px 13px;
     font-weight: bold;
 }
 
 .line-button:hover {
     background-color: #05A045;
+    text-decoration: none;
+    color: #FFFFFF;
+    border: none;
 }
 
 @media (max-width: 768px) {
