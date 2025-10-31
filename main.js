@@ -706,7 +706,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           "choices": ["はい", "一つ前の質問に戻る"]
         },
         "q37": {
-          "title": "当事務所にて、入力内容をお預かりします。\n後ほど具体的なご相談の日程調整について、メールやお電話でご連絡しますので、少々お待ちください。\nこのたびは、お問い合わせいただき、ありがとうございました。",
+          "title": "お問い合わせありがとうございます。\n当事務所にて入力内容をお預かりします。\n後ほど具体的なご相談の日程調整について、メールやお電話でご連絡しますので、少々お待ちください。\nLINEでのやり取りをご希望の場合は、以下より友だち追加とお名前をお送りいただければ、担当者よりご連絡いたします。\n\nLINE公式アカウントはこちら\n\n<div id=\"linee\"><a href=\"https://lin.ee/lMrFz7K\" class=\"line-button\">LINEで連絡する　</a>\n<a href=\"https://lin.ee/lMrFz7K\"><img src=\"https://cautious-broccoli-699x5w4wpw7vfx4-5501.app.github.dev/gainfriends_2dbarcode.png\" alt=\"友だち追加\" height=\"36\" border=\"0\"></a></div>",
           "choices": []
         }
     };
@@ -903,7 +903,12 @@ function robotOutput() {
             }
 
         } else {
-            div.textContent = current.title || current.text;
+            // q37 の時だけ innerHTML を使用して HTML タグを有効化する
+            if (key === 'q37') {
+                div.innerHTML = (current.title || current.text).replace(/\n/g, '<br>');
+            } else {
+                div.textContent = current.title || current.text;
+            }
             sendMessageButton.disabled = false;
 
             if (!["q29", "q30", "q31", "q32", "q34", "q35"].includes(key)) {
